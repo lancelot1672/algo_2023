@@ -1,5 +1,5 @@
 package week37;
-import java.util.Arrays;
+import java.util.*;
 
 public class PRO_숫자변환하기 {
     int[] memo;
@@ -9,10 +9,28 @@ public class PRO_숫자변환하기 {
 
         memo = new int[y+1];
         Arrays.fill(memo, Integer.MAX_VALUE);
+        memo[x] = 0;
 
-        if(memo[y] == Integer.MAX_VALUE){
-            return -1;
+        Queue<Integer> q = new LinkedList<>();
+        q.add(x);
+
+        while(!q.isEmpty()){
+            int now = q.poll();
+
+            if(now + n <= y && memo[now + n] > memo[now] + 1){
+                memo[now + n] = memo[now] + 1;
+                q.add(now + n);
+            }
+            if(now * 2 <= y && memo[now * 2] > memo[now] + 1){
+                memo[now * 2] = memo[now] + 1;
+                q.add(now * 2);
+            }
+            if(now * 3 <= y && memo[now * 3] > memo[now] + 1){
+                memo[now * 3] = memo[now] + 1;
+                q.add(now * 3);
+            }
         }
+        if(memo[y] == Integer.MAX_VALUE) return -1;
         answer = memo[y];
         return answer;
     }
