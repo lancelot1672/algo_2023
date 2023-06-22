@@ -38,7 +38,6 @@ public class B1183_약속 {
             int sum = 0;
             for (int n=0; n<N; n++){
                 sum += Math.abs(number[n] + t);
-                if(sum > min) break;
             }
 
             //min보다 작으면 카운트 다시
@@ -49,7 +48,7 @@ public class B1183_약속 {
             }else if(min == sum){   // 같으면 카운트
                 answer++;
                 //System.out.println(t);
-            }
+            }else break;
         }
         System.out.println(answer);
     }
