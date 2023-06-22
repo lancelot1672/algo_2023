@@ -2,6 +2,7 @@ package week41;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.PriorityQueue;
 
 /**
  * 시간초과
@@ -15,7 +16,8 @@ public class B1563_개근상 {
 
         N = Integer.parseInt(br.readLine());
         answer = 0;
-
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        Integer peek = pq.peek();
         char[] arr = new char[N];
 
         dfs(0, arr, 0, 0);
