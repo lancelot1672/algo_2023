@@ -1,5 +1,10 @@
 package week41;
 
+import java.util.ArrayList;
+import java.util.PriorityQueue;
+import java.util.Stack;
+import java.util.StringTokenizer;
+
 public class PRO_과제진행하기 {
     public String[] solution(String[][] plans) {
         String[] answer = new String[plans.length];

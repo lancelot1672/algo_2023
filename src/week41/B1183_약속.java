@@ -9,9 +9,9 @@ public class B1183_약속 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-        int[] number = new int[N];
+        long[] number = new long[N];
 
-        int T = 0;
+        long T = 0;
         StringTokenizer st;
 
         int total = 0;
@@ -19,7 +19,7 @@ public class B1183_약속 {
             st = new StringTokenizer(br.readLine());
 
 
-            number[n] = Integer.parseInt(st.nextToken()) - Integer.parseInt(st.nextToken());
+            number[n] = Long.parseLong(st.nextToken()) - Long.parseLong(st.nextToken());
 
             //T값 정하기
             T = Math.max(T, number[n]);
@@ -30,12 +30,12 @@ public class B1183_약속 {
 
 
 
-        int answer = 1;
-        int min = Integer.MAX_VALUE;
+        long answer = 1;
+        long min = Long.MAX_VALUE;
 
-        for(int t=T; t>=T * -1; t--){
+        for(long t=T; t>=T * -1; t--){
             //기다리는 시간의 합 구하기
-            int sum = 0;
+            long sum = 0;
             for (int n=0; n<N; n++){
                 sum += Math.abs(number[n] + t);
             }
