@@ -21,7 +21,7 @@ public class B18430_무기공학 {
         M = Integer.parseInt(st.nextToken());
 
         map = new int[N][M];
-        visited = new boolean[N][M];
+
 
         max = 0;
 
@@ -31,41 +31,49 @@ public class B18430_무기공학 {
                 map[i][j] = Integer.parseInt(st.nextToken());
             }
         }
-        dfs(0);
+        visited = new boolean[N][M];
+        dfs(0,0,0);
+
         System.out.println(max);
     }
-    static void dfs(int total){
-        //
-        max = Math.max(max, total);
+    static void dfs(int nowi, int nowj, int total){
+        if(nowj >= M){
+            nowi++;
+            nowj = 0;
+        }
+        if(nowi >= N){
+            max = Math.max(max, total);
+            return;
+        }
 
-        for(int i=0; i<N; i++){
-            for(int j=0; j<M; j++){
-                if(visited[i][j]) continue;
-                for(int d=0; d<4; d++){
-                    int di1 = i + di[d][0];
-                    int dj1 = j + dj[d][0];
+        //안 하고 가고
+        dfs(nowi, nowj+1, total);
 
-                    int di2 = i + di[d][1];
-                    int dj2 = j + dj[d][1];
+        //하고 가고
+        if(visited[nowi][nowj]) return;
+        for(int d=0; d<4; d++){
+            int di1 = nowi + di[d][0];
+            int dj1 = nowj + dj[d][0];
 
-                    if(di1 < 0 || di1 >= N || dj1 < 0 || dj1 >= M) continue;
-                    if(di2 < 0 || di2 >= N || dj2 < 0 || dj2 >= M) continue;
+            int di2 = nowi + di[d][1];
+            int dj2 = nowj + dj[d][1];
 
-                    //visited 체크
-                    if(visited[di1][dj1] || visited[di2][dj2]) continue;
+            if(di1 < 0 || di1 >= N || dj1 < 0 || dj1 >= M) continue;
+            if(di2 < 0 || di2 >= N || dj2 < 0 || dj2 >= M) continue;
 
-                    visited[i][j] = true;
-                    visited[di1][dj1] = true;
-                    visited[di2][dj2] = true;
+            //visited 체크
+            if(visited[di1][dj1] || visited[di2][dj2]) continue;
 
-                    int sum = map[i][j] * 2 + map[di1][dj1] + map[di2][dj2];
-                    dfs(total + sum);
+            visited[nowi][nowj] = true;
+            visited[di1][dj1] = true;
+            visited[di2][dj2] = true;
 
-                    visited[i][j] = false;
-                    visited[di1][dj1] = false;
-                    visited[di2][dj2] = false;
-                }
-            }
+            int sum = map[nowi][nowj] * 2 + map[di1][dj1] + map[di2][dj2];
+            dfs(nowi, nowj+1, total + sum);
+
+            visited[nowi][nowj] = false;
+            visited[di1][dj1] = false;
+            visited[di2][dj2] = false;
         }
     }
 }
