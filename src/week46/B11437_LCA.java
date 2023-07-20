@@ -9,7 +9,8 @@ import java.util.*;
 public class B11437_LCA {
     static int N;
     static ArrayList<Integer>[] adjList;
-
+    static int[] before;
+    static int[] depth;
     public static void main(String[] args) throws Exception{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
@@ -30,22 +31,31 @@ public class B11437_LCA {
 
         }
         // 그 전 노드만 기억
-        int[] before = new int[N+1];
+        before = new int[N+1];
+        depth = new int[N+1];
         Queue<Integer> q = new LinkedList<>();
         boolean[] visited = new boolean[N+1];
 
         q.add(1);
         visited[1] = true;
+
+        int dist = 1;
         while(!q.isEmpty()){
-            int now = q.poll();
+            int size = q.size();
+            for(int s = 0; s < size; s++) {
+                int now = q.poll();
+                depth[now] = dist;  // 노드 레벨 저장
 
-            for(int next : adjList[now]){
-                if(visited[next]) continue;
+                for(int next : adjList[now]){
+                    if(visited[next]) continue;
 
-                before[next] = now;
-                visited[next] = true;
-                q.add(next);
+                    before[next] = now;    // 부모 노드 저장
+
+                    visited[next] = true;
+                    q.add(next);
+                }
             }
+            dist++;
         }
 
         //자기 자신부터 1까지의 depth를 구하면서
@@ -58,46 +68,35 @@ public class B11437_LCA {
             int to = Integer.parseInt(st.nextToken());
             int from = Integer.parseInt(st.nextToken());
 
-
-            ArrayList<Integer> listA = bfs(before, to);
-            ArrayList<Integer> listB = bfs(before, from);
-//            System.out.println("시작~");
-//            System.out.println(listA.toString());
-//            System.out.println(listB.toString());
-            sb.append(getAnswer(listA, listB)).append("\n");
+            System.out.println("to = " + to);
+            System.out.println("depth[to] = " + depth[to]);
+            System.out.println("from = " + from);
+            System.out.println("depth[from] = " + depth[from]);
+            // 둘 중 더 깊이가 깊은 것을 작은 것과 맞추기
+            int lcaNum = lca(to, depth[to], from, depth[from]);
+            sb.append(lcaNum).append("\n");
         }
         System.out.println(sb);
     }
-    static int getAnswer(ArrayList<Integer> listA, ArrayList<Integer> listB){
-        for(int a : listA){
-            for(int b : listB){
-                if(a == b) return a;
+    static int lca(int a, int aDepth, int b, int bDepth){
+        if(a > b){
+            while(aDepth > bDepth){
+                aDepth--;
+                a = before[a];
+            }
+        }else if(a < b){
+            while (bDepth > aDepth){
+                bDepth--;
+                b = before[b];
             }
         }
-        return 1;
-    }
-    static ArrayList<Integer> bfs(int[] before, int start){
-
-        Queue<Integer> q = new LinkedList<>();
-        boolean[] visited = new boolean[N+1];
-
-        q.add(start);
-        visited[start] = true;
-        ArrayList<Integer> list = new ArrayList<>();    // 내 위에 있는 녀석들
-        while(!q.isEmpty()){
-            int now = q.poll();
-            list.add(now);
-
-            int up = before[now];
-            if(visited[up]) continue;
-
-            visited[up] = true;
-            q.add(up);
-
-
-
+        // a == b
+        while(a != b){
+            a = before[a];
+            b = before[b];
         }
-
-        return list;
+        // a == b 가 되는 순간 끝나기 때문에 a 리턴 == b 리턴
+        return a;
     }
+
 }
