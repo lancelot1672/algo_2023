@@ -3,6 +3,7 @@ package week47;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class B13459_구슬탈출  {
@@ -19,7 +20,6 @@ public class B13459_구슬탈출  {
         map = new char[N][M];
         Ball Red = null;
         Ball Blue = null;
-        Ball End = new Ball(0, 0);
         for(int i=0; i<N; i++){
             char[] arr = br.readLine().toCharArray();
             for(int j=0; j<M; j++){
@@ -28,8 +28,6 @@ public class B13459_구슬탈출  {
                     Red = new Ball(i, j);
                 }else if(map[i][j] == 'B'){
                     Blue = new Ball(i, j);
-                }else if(map[i][j] == 'O'){
-                    End = new Ball(i, j);
                 }
             }
         }//end input
@@ -37,7 +35,7 @@ public class B13459_구슬탈출  {
 
         dfs(0, Red, Blue);
 
-        System.out.println(answer ? "1" : 0);
+        System.out.println(answer ? "1" : "0");
     }
     static int[] di = {1, -1, 0, 0};
     static int[] dj = {0, 0, 1, -1};
@@ -51,22 +49,15 @@ public class B13459_구슬탈출  {
             int[] redInfo = rotate(red, d);
             int[] blueInfo = rotate(blue, d);
 
-            Ball nextRed = new Ball(red.i + di[d] * redInfo[2], red.j + dj[d] * redInfo[2]);
-            Ball nextBlue = new Ball(blue.i + di[d] * blueInfo[2], blue.j + dj[d] * blueInfo[2]);
-
-            //Red가 골인
-            if(map[nextRed.i][nextRed.j] == 'O'){
-                //Blue도 동시에 골인
-                if(map[nextBlue.i][nextBlue.j] == 'O'){
-                    return;
-                }
+            if(blueInfo == null){
+                continue;
+            }
+            if(redInfo == null){
                 answer = true;
                 return;
             }
-            //Blue가 골인
-            if(map[nextRed.i][nextRed.j] == 'O'){
-                return;
-            }
+            Ball nextRed = new Ball(red.i + di[d] * redInfo[2], red.j + dj[d] * redInfo[2]);
+            Ball nextBlue = new Ball(blue.i + di[d] * blueInfo[2], blue.j + dj[d] * blueInfo[2]);
 
             // 두 구슬 위치가 같을 때 ....?
             map[red.i][red.j] = '.';
@@ -76,10 +67,11 @@ public class B13459_구슬탈출  {
 
             dfs(depth+1, nextRed, nextBlue);
 
-            map[red.i][red.j] = 'R';
-            map[blue.i][blue.j] = 'B';
+
             map[nextRed.i][nextRed.j] = '.';
             map[nextBlue.i][nextBlue.j] = '.';
+            map[red.i][red.j] = 'R';
+            map[blue.i][blue.j] = 'B';
         }
     }
     static void print(){
@@ -101,13 +93,16 @@ public class B13459_구슬탈출  {
             int nexti = nowi + di[d];
             int nextj = nowj + dj[d];
 
-            if(map[nexti][nextj] == '.') cnt++;
+            if(map[nexti][nextj] == '.') {
+                cnt++;
+            }
             if(map[nexti][nextj] == '#') break;
-            if(map[nexti][nextj] == 'O') break;
+            if(map[nexti][nextj] == 'O') return null;
 
             nowi = nexti;
             nowj = nextj;
         }
+
         int[] info = new int[3];
         info[0] = nowi;
         info[1] = nowj;

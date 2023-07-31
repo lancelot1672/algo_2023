@@ -12,6 +12,7 @@ package week47;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.StringTokenizer;
 
 public class B21758_꿀따기 {
@@ -47,17 +48,18 @@ public class B21758_꿀따기 {
         //벌통 위치 옮기기
         for(int i=0; i<N; i++){
             oneone(i, left, right);
-            twoZero(i, left);
-            zeroTwo(i, right);
+            twoZero(i, left, arr);
+            zeroTwo(i, right, arr);
         }
 
         System.out.println(answer);
     }
-    static void twoZero(int tong, int[] left){
-        int sum = left[tong] - left[0];
+    static void twoZero(int tong, int[] left, int[] arr){
+        int sum = left[tong] - arr[0]; //36
         for(int i=1; i<tong; i++){
-            int max = sum + (left[tong] - left[i]) - left[i];
-
+            int max = sum + (left[tong] - left[i]) - arr[i];
+            // i = 3
+            // 36 + (45 - 23) - 1 = 21
             answer = Math.max(max, answer);
         }
 
@@ -65,10 +67,10 @@ public class B21758_꿀따기 {
     static void oneone(int tong, int[] left, int[] right){
         answer = Math.max(left[tong] - left[0] + right[tong] - right[N-1], answer);
     }
-    static void zeroTwo(int tong, int[] right){
-        int sum = right[tong] - right[N-1];
+    static void zeroTwo(int tong, int[] right, int[] arr){
+        int sum = right[tong] - arr[N-1];
         for(int i=N-2; i>tong; i--){
-            int max = sum + (right[tong] - right[i]) - right[i];
+            int max = sum + (right[tong] - right[i]) - arr[i];
 
             answer = Math.max(max, answer);
         }
