@@ -2,6 +2,12 @@ package week49;
 
 import java.util.Stack;
 
+/**
+ * Time : 15m
+ * Category : 구현
+ * Description
+ * 2019 KAKAO 카카오 개발자 겨울 인턴쉽
+ */
 public class PRO_크레인인형뽑기게임 {
     int N;
     public int solution(int[][] board, int[] moves) {
